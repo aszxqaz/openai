@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db/scripts:/docker-entrypoint-initdb.d/
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d postgres']
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+  api:
+    build: .
+    environment:
+      OPENAI_API_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc3YjEyMWFlLWUwZDYtNDliMi1iNjlmLTBkNzE3ODkzYjgzOSIsImlzRGV2ZWxvcGVyIjp0cnVlLCJpYXQiOjE3Mjc2OTA0MTgsImV4cCI6MjA0MzI2NjQxOH0.0_rVXKNuSCBP4MO6hBnTXAE0kE1h52xpwDSGPaR4vGM
+      OPENAI_BASE_URL: https://bothub.chat/api/v2/openai/v1
+      DATABASE_URL: postgresql://nonroot:iNl4t4T9RGST4q7p11u6@db:5432/openai?schema=public
+      JWT_SECRET: r7ea0g7L4VDAHJan83tzUZyuFgXL8i15
+      JWT_EXPIRES_IN: 1d
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 3000:3000

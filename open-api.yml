@@ -1,0 +1,865 @@
+openapi: 3.0.0
+paths:
+  /auth/register:
+    post:
+      operationId: AuthController_register
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestBody'
+      responses:
+        '204':
+          description: User registered successfully
+        '400':
+          description: Invalid request body parameters
+        '409':
+          description: User with this username already registered
+        '500':
+          description: Server error
+      summary: Register a user
+      tags:
+        - Authentication
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestBody'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid request body parameters
+        '401':
+          description: Invalid username or password
+        '500':
+          description: Server error
+      summary: Login
+      tags:
+        - Authentication
+  /auth/me:
+    get:
+      operationId: AuthController_me
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+        '401':
+          description: User not logged in
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Get currently logged in user
+      tags:
+        - Authentication
+  /account:
+    get:
+      operationId: AccountController_current
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: User not logged in
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Get current user account
+      tags:
+        - Accounts
+  /users/{userId}/account:
+    get:
+      operationId: AccountController_findOne
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: User ID
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: User not logged in
+        '403':
+          description: You are not an admin
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Get account info (admin only)
+      tags:
+        - Accounts
+  /users/{userId}/account/credit:
+    post:
+      operationId: AccountController_credit
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: User ID
+          schema:
+            type: number
+        - name: amount
+          required: true
+          in: query
+          description: Amount to credit the account with
+          schema:
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: User not logged in
+        '403':
+          description: You are not an admin
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Credit an account (admin only)
+      tags:
+        - Accounts
+  /users/{userId}/account/debit:
+    post:
+      operationId: AccountController_debit
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: User ID
+          schema:
+            type: number
+        - name: amount
+          required: true
+          in: query
+          description: Amount to debit the account with
+          schema:
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: User not logged in
+        '403':
+          description: You are not an admin
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Debit an account (admin only)
+      tags:
+        - Accounts
+  /models:
+    get:
+      operationId: ModelController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Model'
+        '401':
+          description: User not logged in
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Get list of supported OpenAI models
+      tags:
+        - Models
+    post:
+      operationId: ModelController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateModelRequestBody'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Model'
+        '401':
+          description: User not logged in
+        '403':
+          description: You are not an admin
+        '409':
+          description: Model with this name already exists
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Add supported OpenAI model (admin only)
+      tags:
+        - Models
+  /models/{name}:
+    get:
+      operationId: ModelController_findOne
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '401':
+          description: User not logged in
+        '404':
+          description: OpenAI model not found
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Find supported OpenAI model by name
+      tags:
+        - Models
+  /users:
+    get:
+      operationId: UserController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: User not logged in
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Get list of users
+      tags:
+        - Users
+  /users/{userId}:
+    patch:
+      operationId: UserController_updateSecure
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: User ID
+          schema:
+            type: number
+        - name: role
+          required: true
+          in: query
+          description: Role of a user
+          schema:
+            example: Admin
+            enum:
+              - Admin
+              - User
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request query or path params
+        '401':
+          description: User not logged in
+        '403':
+          description: You are not an admin
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Update a user
+      tags:
+        - Users
+  /openai/chat/completions:
+    post:
+      operationId: ChatController_createCompletion
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompletionBody'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCompletionResponse'
+        '400':
+          description: Invalid input parameters
+        '401':
+          description: User not logged in
+        '403':
+          description: Insufficient credits for generaiton
+        '422':
+          description: Model not found or not supported
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Generate chat completion
+      tags:
+        - Chats
+  /openai/stream/chat/completions:
+    post:
+      operationId: ChatController_createCompletionStream
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCompletionBody'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionChunk'
+        '400':
+          description: Invalid input parameters
+        '401':
+          description: User not logged in
+        '403':
+          description: Insufficient credits for generaiton
+        '422':
+          description: Model not found or not supported
+        '500':
+          description: Server error
+      security:
+        - bearer: []
+      summary: Generate chat completion by streaming chunks (SSE)
+      tags:
+        - Chats
+info:
+  title: OpenAI API
+  description: API for interacting with OpenAI chat completions
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    RegisterRequestBody:
+      type: object
+      properties:
+        username:
+          type: string
+          description: User username
+          minLength: 3
+          maxLength: 20
+          example: Peterson
+        password:
+          type: string
+          description: User password
+          minLength: 6
+          maxLength: 64
+          example: 0v3rfl0w
+      required:
+        - username
+        - password
+    LoginRequestBody:
+      type: object
+      properties:
+        username:
+          type: string
+          description: User username
+          minLength: 3
+          maxLength: 20
+          example: Peterson
+        password:
+          type: string
+          description: User password
+          minLength: 6
+          maxLength: 64
+          example: 0v3rfl0w
+      required:
+        - username
+        - password
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User ID
+          minimum: 1
+          example: 1
+        username:
+          type: string
+          description: User username
+          minLength: 3
+          maxLength: 20
+          example: Peterson
+        role:
+          type: string
+          enum:
+            - Admin
+            - User
+          description: Role of a user
+          example: Admin
+      required:
+        - id
+        - username
+        - role
+    LoginResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+          description: Bearer token
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTczMTUzNzE3NywiZXhwIjoxNzMxNjIzNTc3fQ.8AhKDbopJXKLgwXdJHzSAfACSwJeEy-s-Yc1dO1f6VE
+      required:
+        - user
+        - token
+    MeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User ID
+          minimum: 1
+          example: 1
+        username:
+          type: string
+          description: User username
+          minLength: 3
+          maxLength: 20
+          example: Peterson
+        role:
+          type: string
+          enum:
+            - Admin
+            - User
+          description: Role of a user
+          example: Admin
+      required:
+        - id
+        - username
+        - role
+    Account:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: User ID
+          minimum: 1
+          example: 1
+        availableCredits:
+          type: integer
+          description: Amount of credits available for the account
+          example: 10000
+      required:
+        - userId
+        - availableCredits
+    Model:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Model ID
+          minimum: 1
+          example: 1
+        name:
+          type: string
+          description: OpenAI model name
+          minLength: 3
+          maxLength: 32
+          example: gpt-4o
+        creditsPerToken:
+          type: integer
+          description: Amount of credits charged for usage of the model
+          minimum: 1
+          maximum: 1000
+          example: 50
+      required:
+        - id
+        - name
+        - creditsPerToken
+    CreateModelRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          description: OpenAI model name
+          minLength: 3
+          maxLength: 32
+          example: gpt-4o
+        creditsPerToken:
+          type: integer
+          description: Amount of credits charged for usage of the model
+          minimum: 1
+          maximum: 1000
+          example: 50
+      required:
+        - name
+        - creditsPerToken
+    Message:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+            - system
+          description: The role of the author of a message
+          example: user
+        content:
+          type: string
+          description: The content of the message
+          example: What is the weather like today?
+      required:
+        - role
+        - content
+    CreateCompletionBody:
+      type: object
+      properties:
+        messages:
+          description: A list of messages comprising the conversation so far
+          example:
+            - role: user
+              content: Say this is a test
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        model:
+          type: string
+          description: OpenAI model name
+          minLength: 3
+          maxLength: 32
+          example: gpt-4o
+      required:
+        - messages
+        - model
+    CompletionUsage:
+      type: object
+      properties:
+        completionTokens:
+          type: integer
+          description: Number of tokens in the generated completion
+          example: 100
+        promptTokens:
+          type: integer
+          description: Number of tokens in the prompt
+          example: 100
+        totalTokens:
+          type: integer
+          description: Total number of tokens used in the request (prompt + completion)
+          example: 200
+      required:
+        - completionTokens
+        - promptTokens
+        - totalTokens
+    TopLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token
+          example: the
+        bytes:
+          description: >-
+            A list of integers representing the UTF-8 bytes representation of
+            the token
+          example:
+            - 213
+            - 155
+            - 123
+            - 255
+            - 1
+            - 17
+          type: array
+          items:
+            type: number
+        logprob:
+          type: number
+          description: The log probability of the token
+          example: 1.8966641426086426
+      required:
+        - token
+    ChatCompletionTokenLogprob:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token
+        bytes:
+          description: >-
+            A list of integers representing the UTF-8 bytes representation of
+            the token
+          example:
+            - 213
+            - 155
+            - 123
+            - 255
+            - 1
+            - 17
+          type: array
+          items:
+            type: number
+        logprob:
+          type: number
+          description: The log probability of the token
+          example: 1.8966641426086426
+        topLogPropbs:
+          description: >-
+            List of the most likely tokens and their log probability, at this
+            token position
+          type: array
+          items:
+            $ref: '#/components/schemas/TopLogprob'
+      required:
+        - token
+        - topLogPropbs
+    LogProbs:
+      type: object
+      properties:
+        content:
+          description: A list of message content tokens with log probability information
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+        refusal:
+          description: A list of message refusal tokens with log probability information
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+      required:
+        - content
+        - refusal
+    ChatCompletionMessage:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The contents of the message
+          example: London is the capital of Great Britain.
+        refusal:
+          type: string
+          description: The refusal message generated by the model
+          example: I apologize, but I cannot help you with that.
+        role:
+          type: string
+          enum:
+            - assistant
+          description: The role of the author of this message
+      required:
+        - role
+    ChatCompletionChoice:
+      type: object
+      properties:
+        finish_reason:
+          type: string
+          enum:
+            - stop
+            - length
+            - tool_calls
+            - content_filter
+            - function_call
+          description: The reason the model stopped generating tokens
+        index:
+          type: integer
+          description: The index of the choice in the list of choices
+        logprobs:
+          description: Log probability information for the choice
+          allOf:
+            - $ref: '#/components/schemas/LogProbs'
+        message:
+          description: A chat completion message generated by the model
+          allOf:
+            - $ref: '#/components/schemas/ChatCompletionMessage'
+      required:
+        - finish_reason
+        - index
+        - logprobs
+        - message
+    ChatCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the chat completion
+        created:
+          type: integer
+          description: The timestamp at which the chat completion was created
+          example: 1673950400
+          format: unixTimestamp
+        model:
+          type: string
+          description: The model used for the chat completion
+        usage:
+          description: The completion usage information
+          allOf:
+            - $ref: '#/components/schemas/CompletionUsage'
+        choices:
+          description: A list of chat completion choices
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChoice'
+      required:
+        - id
+        - created
+        - model
+        - choices
+    CreateCompletionResponse:
+      type: object
+      properties:
+        completion:
+          description: Chat completion generated by the model
+          allOf:
+            - $ref: '#/components/schemas/ChatCompletion'
+        creditsCharged:
+          type: integer
+          description: Amount of credits charged for usage of the model
+          example: 2000
+      required:
+        - completion
+        - creditsCharged
+    Delta:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The contents of the message
+          example: London is the capital of Great Britain.
+        refusal:
+          type: string
+          description: The refusal message generated by the model
+          example: I apologize, but I cannot help you with that.
+        role:
+          type: string
+          enum:
+            - system
+            - user
+            - assistant
+            - tool
+          description: The role of the author of this message
+          example: assistant
+      required:
+        - role
+    ChatCompletionChunkChoice:
+      type: object
+      properties:
+        delta:
+          description: A chat completion delta generated by streamed model responses
+          allOf:
+            - $ref: '#/components/schemas/Delta'
+        finish_reason:
+          type: string
+          enum:
+            - stop
+            - length
+            - tool_calls
+            - content_filter
+            - function_call
+          description: The reason the model stopped generating tokens
+        index:
+          type: integer
+          description: The index of the choice in the list of choices
+        logprobs:
+          description: Log probability information for the choice
+          allOf:
+            - $ref: '#/components/schemas/LogProbs'
+      required:
+        - delta
+        - finish_reason
+        - index
+        - logprobs
+    ChatCompletionChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the chat completion
+        created:
+          type: integer
+          description: The timestamp at which the chat completion was created
+          example: 1673950400
+          format: unixTimestamp
+        model:
+          type: string
+          description: The model used for the chat completion
+        usage:
+          description: The completion usage information
+          allOf:
+            - $ref: '#/components/schemas/CompletionUsage'
+        choices:
+          description: A list of chat completion choices
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChunkChoice'
+      required:
+        - id
+        - created
+        - model
+        - choices

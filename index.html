@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <script>
+      function connect(name) {
+        const eventSource = new EventSource(
+          `http://localhost:3000/text/answers?user=${name}`,
+        );
+        eventSource.onmessage = ({ data }) => {
+          console.log('New message', JSON.parse(data));
+        };
+        console.log(`Connected as ${name}`);
+      }
+    </script>
+  </head>
+  <body>
+    <input id="input" placeholder="Name" />
+    <button onclick="connect(document.getElementById('input').value)">
+      OK
+    </button>
+  </body>
+</html>
