@@ -5,9 +5,9 @@ import { OmitPartial } from 'src/common/types';
 import { PrismaErrorCode, PrismaService } from 'src/modules/prisma';
 
 export enum UserRepositoryError {
-  UserAlreadyExists,
-  InternalError,
-  UserNotFound,
+  UserAlreadyExists = 'UserRepositoryError.UserAlreadyExists',
+  InternalError = 'UserRepositoryError.InternalError',
+  UserNotFound = 'UserRepositoryError.UserNotFound',
 }
 
 @Injectable()
@@ -55,7 +55,10 @@ export class UserRepository {
       this.prisma.user.findUnique({
         where: { username },
       }),
-      e => UserRepositoryError.InternalError as const,
+      e => {
+        console.log(e);
+        return UserRepositoryError.InternalError as const;
+      },
     ).andThen(user => {
       if (!user) {
         return err(UserRepositoryError.UserNotFound as const);

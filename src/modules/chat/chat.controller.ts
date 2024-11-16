@@ -32,6 +32,8 @@ import { SseController } from 'src/common/sse';
 import {
   CreateCompletionBody,
   CreateCompletionResponse,
+  CreateCompletionStreamChunkResponse,
+  CreateCompletionStreamResponseChunkError,
 } from './chat.controller.types';
 import { ChatService } from './chat.service';
 import {
@@ -95,7 +97,7 @@ export class ChatController extends SseController {
   })
   @ApiOkResponse({
     description: 'Success',
-    type: ChatCompletionChunk,
+    type: CreateCompletionStreamChunkResponse,
   })
   @ApiUnprocessableEntityResponse({
     description: 'Model not found or not supported',
@@ -131,7 +133,6 @@ export class ChatController extends SseController {
     }
 
     const stream = this.getChunkResponseGenerator(streamResult._unsafeUnwrap());
-
     this.stream(res, stream);
   }
 
@@ -141,7 +142,7 @@ export class ChatController extends SseController {
       void,
       unknown
     >,
-  ) {
+  ): AsyncGenerator<CreateCompletionStreamChunkResponse, void, unknown> {
     for await (const result of stream) {
       if (result.isOk()) {
         const { chunk, creditsCharged } = result._unsafeUnwrap();
@@ -152,7 +153,9 @@ export class ChatController extends SseController {
       } else {
         const e = result._unsafeUnwrapErr();
         yield {
-          error: this.mapErrorToHttp(e),
+          error: CreateCompletionStreamResponseChunkError.fromHttpException(
+            this.mapErrorToHttp(e),
+          ),
         };
       }
     }

@@ -1,3 +1,4 @@
+import { HttpException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -41,17 +42,56 @@ export class CreateCompletionResponse {
   creditsCharged: number;
 }
 
-export class CreateCompletionStreamResponse {
+export class CreateCompletionStreamResponseChunkError {
+  @ApiProperty({
+    type: 'string',
+    description: 'Error message',
+    example: 'Internal Server Error',
+  })
+  public readonly message: string;
+
+  @ApiProperty({
+    type: 'integer',
+    description: 'Error code',
+    example: 500,
+  })
+  public readonly code: number;
+
+  constructor(message: string, code: number) {
+    this.message = message;
+    this.code = code;
+  }
+
+  static fromHttpException(
+    httpException: HttpException,
+  ): CreateCompletionStreamResponseChunkError {
+    return new CreateCompletionStreamResponseChunkError(
+      httpException.message,
+      httpException.getStatus(),
+    );
+  }
+}
+
+export class CreateCompletionStreamChunkResponse {
   @ApiProperty({
     type: ChatCompletionChunk,
     description: 'Represents a streamed chunk of a chat completion',
+    nullable: true,
   })
-  completion: ChatCompletionChunk;
+  chunk?: ChatCompletionChunk;
 
   @ApiProperty({
     type: 'integer',
     description: 'Amount of credits charged for usage of the model',
     example: 2000,
+    nullable: true,
   })
   creditsCharged?: number;
+
+  @ApiProperty({
+    type: CreateCompletionStreamResponseChunkError,
+    description: 'Error details if obtaining chunk failed',
+    nullable: true,
+  })
+  error?: CreateCompletionStreamResponseChunkError;
 }
