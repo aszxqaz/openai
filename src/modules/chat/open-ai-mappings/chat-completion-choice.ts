@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ChatCompletion as OpenAIChatCompletion } from 'openai/resources';
-import { ChatCompletionMessage, LogProbs } from '.';
+import { ChatCompletionMessage } from './chat-completion-message';
+
+import { LogProbs } from './logprobs';
 export class ChatCompletionChoice {
   @ApiProperty({
     enum: ['stop', 'length', 'tool_calls', 'content_filter', 'function_call'],

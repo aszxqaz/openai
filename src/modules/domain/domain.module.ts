@@ -1,11 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 import { PrismaModule } from 'src/modules/prisma';
-import {
-  AccountRepository,
-  CredentialsRepository,
-  ModelsRepository,
-  UserRepository,
-} from '.';
+import { AccountRepository } from './account.repository';
+import { CredentialsRepository } from './credentials.repository';
+import { ModelsRepository } from './models.repository';
+import { UserRepository } from './user.repository';
 
 @Global()
 @Module({

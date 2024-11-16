@@ -1,5 +1,9 @@
 import { ChatCompletionTokenLogprob as OpenAIChatCompletionTokenLogprob } from 'openai/resources';
-import { ApiPropertyBytes, ApiPropertyLogprob, ApiPropertyToken } from '.';
+import {
+  ApiPropertyBytes,
+  ApiPropertyLogprob,
+  ApiPropertyToken,
+} from './properties';
 
 export class TopLogprob {
   @ApiPropertyToken()

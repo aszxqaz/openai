@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ChatCompletionMessage as OpenAIChatCompletionMessage } from 'openai/resources';
-import { ApiPropertyContent, ApiPropertyRefusal } from '.';
+import { ApiPropertyContent, ApiPropertyRefusal } from './properties';
 
 export class ChatCompletionMessage {
   @ApiPropertyContent()

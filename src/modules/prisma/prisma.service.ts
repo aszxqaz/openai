@@ -9,7 +9,7 @@ import {
   UniqueConstraintViolation,
   UnknownError,
   UpdateRecordNotFound,
-} from '.';
+} from './errors';
 
 @Injectable()
 export class PrismaService extends PrismaClient {

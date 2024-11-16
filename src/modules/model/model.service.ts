@@ -13,8 +13,8 @@ type CreateModelResult = {
 };
 
 export enum CreateModelError {
-  InternalError,
-  ModelAlreadyExist,
+  InternalError = 'CreateModelError.InternalError',
+  ModelAlreadyExist = 'CreateModelError.ModelAlreadyExist',
 }
 
 export type QueryModelsArgs = {};
@@ -24,7 +24,7 @@ export type QueryModelsResult = {
 };
 
 export enum QueryModelsError {
-  InternalError,
+  InternalError = 'QueryModelsError.InternalError',
 }
 
 export type QueryModelArgs = {
@@ -36,8 +36,8 @@ export type QueryModelResult = {
 };
 
 export enum QueryModelError {
-  InternalError,
-  ModelNotFound,
+  InternalError = 'QueryModelError.InternalError',
+  ModelNotFound = 'QueryModelError.ModelNotFound',
 }
 
 @Injectable()

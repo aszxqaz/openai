@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ChatCompletionTokenLogprob as OpenAIChatCompletionTokenLogprob } from 'openai/resources';
-import { ApiPropertyBytes, ApiPropertyLogprob, TopLogprob } from '.';
+import { ApiPropertyBytes, ApiPropertyLogprob } from './properties';
+import { TopLogprob } from './top-log-prob';
 
 export class ChatCompletionTokenLogprob {
   @ApiProperty({

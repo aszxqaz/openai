@@ -30,14 +30,16 @@ import { Result } from 'neverthrow';
 import { RequestorParam } from 'src/common/decorators';
 import { SseController } from 'src/common/sse';
 import {
-  ChatCompletion,
-  ChatCompletionChunk,
-  ChatService,
   CreateCompletionBody,
-  CreateCompletionError,
   CreateCompletionResponse,
+} from './chat.controller.types';
+import { ChatService } from './chat.service';
+import {
+  CreateCompletionError,
   CreateCompletionStreamResult,
-} from '.';
+} from './chat.service.types';
+import { ChatCompletion } from './open-ai-mappings/chat-completion';
+import { ChatCompletionChunk } from './open-ai-mappings/chat-completion-chunk';
 
 @ApiTags('Chats')
 @ApiBearerAuth()

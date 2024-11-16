@@ -25,15 +25,14 @@ import { AdminOnly } from 'src/common/guards';
 import { UserIdParam } from 'src/common/params';
 import { Account as AccountSchema } from 'src/common/swagger';
 import {
-  AccountService,
   AmountQuery,
-  CreditAccountError,
   CreditQuery,
   CreditResponse,
   DebitQuery,
   DebitResponse,
-  QueryAccountError,
-} from '.';
+} from './account.controller.types';
+import { AccountService } from './account.service';
+import { CreditAccountError, QueryAccountError } from './account.service.types';
 
 @ApiTags('Accounts')
 @ApiBearerAuth()

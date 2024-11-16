@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User, UserRole } from '@prisma/client';
+import { User } from '@prisma/client';
 import { hash, verify } from 'argon2';
 import { err, ok, ResultAsync } from 'neverthrow';
 import { AuthTokenPayload } from 'src/common/auth';
@@ -12,38 +12,13 @@ import {
   UserRepository,
   UserRepositoryError,
 } from 'src/modules/domain';
-
-export enum RegisterError {
-  UserAlreadyExists = 'RegisterError.UserAlreadyExists',
-  InternalError = 'RegisterError.InternalError',
-}
-
-export type RegisterArgs = {
-  username: string;
-  password: string;
-  role?: UserRole;
-  startingCredits?: number;
-};
-
-export enum VerifyPasswordError {
-  UserNotFound = 'VerifyPasswordError.UserNotFound',
-  CredentialsNotFound = 'VerifyPasswordError.CredentialsNotFound',
-  InternalError = 'VerifyPasswordError.InternalError',
-  WrongPassword = 'VerifyPasswordError.WrongPassword',
-}
-
-export type VerifyPasswordArgs = {
-  username: string;
-  password: string;
-};
-
-export type VerifyPasswordResult = {
-  user: User;
-};
-
-export enum GenerateTokenError {
-  SignFailed = 'GenerateTokenError.SignFailed',
-}
+import {
+  GenerateTokenError,
+  RegisterArgs,
+  RegisterError,
+  VerifyPasswordArgs,
+  VerifyPasswordError,
+} from './auth.service.types';
 
 @Injectable()
 export class AuthService {

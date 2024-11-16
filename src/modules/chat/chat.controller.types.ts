@@ -8,12 +8,10 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import {
-  ChatCompletion,
-  ChatCompletionChunk,
-  CreateCompletionData,
-  Message,
-} from '.';
+import { ChatCompletion } from './open-ai-mappings/chat-completion';
+import { ChatCompletionChunk } from './open-ai-mappings/chat-completion-chunk';
+import { CreateCompletionData } from './open-ai-mappings/create-completion-data';
+import { Message } from './open-ai-mappings/message';
 
 export class CreateCompletionBody extends CreateCompletionData {
   @IsArray()

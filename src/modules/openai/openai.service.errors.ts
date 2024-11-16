@@ -1,8 +1,8 @@
 export enum OpenAIServiceErrorCode {
-  Unknown,
-  NotFound,
-  BadRequest,
-  InternalError,
+  Unknown = 'OpenAIServiceErrorCode.Unknown',
+  NotFound = 'OpenAIServiceErrorCode.NotFound',
+  BadRequest = 'OpenAIServiceErrorCode.BadRequest',
+  InternalError = 'OpenAIServiceErrorCode.InternalError',
 }
 
 export class OpenAIServiceError extends Error {

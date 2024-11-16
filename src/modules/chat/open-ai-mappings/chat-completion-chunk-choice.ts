@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ChatCompletionChunk as OpenAIChatCompletionChunk } from 'openai/resources';
-import { Delta, LogProbs } from '.';
+import { Delta } from './chat-completion-chunk-choice-delta';
+import { LogProbs } from './logprobs';
 
 export class ChatCompletionChunkChoice {
   @ApiProperty({

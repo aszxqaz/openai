@@ -3,7 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { err, ok, ResultAsync } from 'neverthrow';
 import OpenAI from 'openai';
 import { ChatCompletion } from 'openai/resources';
-import { OpenAIServiceError, OpenAIServiceErrorCode } from './errors';
+import {
+  OpenAIServiceError,
+  OpenAIServiceErrorCode,
+} from './openai.service.errors';
 import {
   CreateChatCompletionArgs,
   CreateChatCompletionStreamArgs,

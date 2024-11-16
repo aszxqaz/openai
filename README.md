@@ -2,6 +2,8 @@
 
 ## Installation:
 
+Ensure that ports 3000, 5432 are not allocated.
+
 ```bash
 git clone https://github.com/aszxqaz/openai.git
 cd openai

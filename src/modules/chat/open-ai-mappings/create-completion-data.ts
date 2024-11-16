@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ApiPropertyModelName } from 'src/common/swagger';
-import { Message } from '.';
+import { Message } from './message';
 
 export class CreateCompletionData {
   @ApiProperty({

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CompletionUsage } from '.';
+import { CompletionUsage } from './completion-usage';
 
 export class ChatCompletionBase {
   @ApiProperty({

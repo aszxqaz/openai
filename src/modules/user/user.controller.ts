@@ -24,7 +24,7 @@ import { AdminOnly } from 'src/common/guards';
 import { UserIdParam } from 'src/common/params';
 import { User as UserSchema } from 'src/common/swagger';
 import { UserRepository, UserRepositoryError } from 'src/modules/domain';
-import { UpdateSecureUserQuery } from '.';
+import { UpdateSecureUserQuery } from './user.controller.types';
 
 @ApiTags('Users')
 @ApiBearerAuth()

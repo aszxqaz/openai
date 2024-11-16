@@ -1,10 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ChatCompletionChunk as OpenAIChatCompletionChunk } from 'openai/resources';
-import {
-  ChatCompletionBase,
-  ChatCompletionChunkChoice,
-  CompletionUsage,
-} from '.';
+import { ChatCompletionBase } from './chat-completion-base';
+import { ChatCompletionChunkChoice } from './chat-completion-chunk-choice';
+import { CompletionUsage } from './completion-usage';
 
 export class ChatCompletionChunk extends ChatCompletionBase {
   @ApiProperty({

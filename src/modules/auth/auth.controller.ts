@@ -23,18 +23,21 @@ import {
 } from '@nestjs/swagger';
 import { Requestor } from 'src/common/auth';
 import { RequestorParam } from 'src/common/decorators';
+
 import {
-  AuthService,
-  GenerateTokenError,
   LoginRequestBody,
   LoginResponse,
   MeResponse,
-  Public,
-  RegisterError,
   RegisterRequestBody,
   RegisterResponse,
+} from './auth.controller.types';
+import { Public } from './auth.guard';
+import { AuthService } from './auth.service';
+import {
+  GenerateTokenError,
+  RegisterError,
   VerifyPasswordError,
-} from '.';
+} from './auth.service.types';
 
 @ApiTags('Authentication')
 @ApiInternalServerErrorResponse({ description: 'Server error' })
