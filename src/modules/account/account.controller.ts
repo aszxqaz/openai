@@ -19,11 +19,11 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Account } from '@prisma/client';
+import { Requestor } from 'src/common/auth';
 import { RequestorParam } from 'src/common/decorators';
 import { AdminOnly } from 'src/common/guards';
 import { UserIdParam } from 'src/common/params';
 import { Account as AccountSchema } from 'src/common/swagger';
-import { Requestor } from 'src/common/types';
 import {
   AccountService,
   AmountQuery,

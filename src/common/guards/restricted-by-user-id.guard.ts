@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { Observable } from 'rxjs';
-import { Requestor } from '../types';
+import { Requestor } from 'src/common/auth';
 
 export const RestrictedByUserId = () => UseGuards(RestrictedByUserIdGuard);
 
