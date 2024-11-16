@@ -3,6 +3,8 @@
 ## Installation:
 
 ```bash
+git clone https://github.com/aszxqaz/openai.git
+cd openai
 docker compose up --build
 ```
 
