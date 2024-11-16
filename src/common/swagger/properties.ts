@@ -89,6 +89,5 @@ export const ApiPropertyRequiredPositiveInt = (description: string) =>
     name: 'amount',
     type: 'integer',
     minimum: 1,
-    required: true,
     description,
   });

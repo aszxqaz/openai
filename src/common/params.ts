@@ -6,7 +6,6 @@ export class UserIdParam {
   @ApiProperty({
     name: 'userId',
     type: Number,
-    required: true,
     description: 'User ID',
   })
   @IsPositive()

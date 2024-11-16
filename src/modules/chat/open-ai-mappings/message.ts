@@ -11,7 +11,6 @@ export class Message {
     enum: ['user', 'system'],
     description: 'The role of the author of a message',
     example: 'user',
-    required: true,
   })
   @IsEnum(Role)
   role: Role;
@@ -20,7 +19,6 @@ export class Message {
     type: 'string',
     description: 'The content of the message',
     example: 'What is the weather like today?',
-    required: true,
   })
   @IsString()
   @IsNotEmpty()
