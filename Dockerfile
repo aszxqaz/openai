@@ -13,6 +13,7 @@ RUN if [ "$NODE_ENV" = "development" ]; \
 COPY . ./
 
 RUN npx prisma generate
+RUN npm install -g @nestjs/cli
 RUN npm run build
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
